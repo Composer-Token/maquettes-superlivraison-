@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquette de l'administration</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="dc-viewer.js"></script>
+<script>
+  const q = new URLSearchParams(location.search);
+  mountDC('src/Admin.dc.html', document.getElementById('app'), { dark: q.get('theme') === 'sombre' });
+</script>
+</body>
+</html>

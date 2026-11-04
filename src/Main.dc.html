@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Application de livraison pour restaurants</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0B6E99}a:hover{color:#0B2F44}
+.t-light{--bg:#F4FBFE;--surface:#FFFFFF;--ink:#0B2F44;--muted:#4A6B7C;--line:#D3EBF5;--sky:#87CEEB;--on-sky:#0B2F44;--soft:#EAF7FC;--link:#0B6E99;--warn-bg:#FFF1DC;--warn:#7A4B00}
+.t-dark{--bg:#0A2230;--surface:#12344A;--ink:#EAF7FC;--muted:#A9C6D6;--line:#21506B;--sky:#87CEEB;--on-sky:#0B2F44;--soft:#173F58;--link:#87CEEB;--warn-bg:#4A3410;--warn:#FFD699}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;padding:0 16px;box-sizing:border-box;border:0;border-radius:14px;background:var(--sky);color:var(--on-sky);font:700 16px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.btn2{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;padding:0 16px;box-sizing:border-box;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);font:600 15px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.ico{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:12px;background:transparent;color:var(--ink);cursor:pointer;padding:0}
+.card{display:block;width:100%;box-sizing:border-box;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);text-align:left;font:inherit}
+.tap{cursor:pointer}
+.field{width:100%;box-sizing:border-box;min-height:50px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:500 16px 'Plus Jakarta Sans',sans-serif}
+.field::placeholder{color:var(--muted)}
+.chip{min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:22px;background:var(--surface);color:var(--ink);font:600 14px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.chip.on{background:var(--sky);border-color:var(--sky);color:var(--on-sky)}
+.badge{display:inline-block;padding:4px 10px;border-radius:12px;background:var(--soft);color:var(--ink);font-size:12px;font-weight:700;white-space:nowrap}
+.badge.act{background:var(--warn-bg);color:var(--warn)}
+.tab{flex:1;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;color:var(--muted);font:600 11px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.tab.on{color:var(--ink);font-weight:800}
+.tab.on .pill{background:var(--sky);color:var(--on-sky)}
+.pill{display:flex;align-items:center;justify-content:center;width:52px;height:30px;border-radius:15px}
+.lab{font-size:13px;font-weight:700;color:var(--ink)}
+.mut{color:var(--muted)}
+.mic{display:flex;align-items:center;justify-content:center;width:84px;height:84px;border:0;border-radius:42px;background:var(--sky);color:var(--on-sky);cursor:pointer}
+.mic.rec{background:var(--warn-bg);color:var(--warn);outline:4px solid var(--warn-bg);outline-offset:4px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:58px;padding:0 14px;box-sizing:border-box;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);font:600 15px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.opt.on{border:2px solid var(--sky);background:var(--soft)}
+.step{display:flex;align-items:center;gap:12px;min-height:34px;font-size:14px}
+.dot{width:14px;height:14px;box-sizing:border-box;border-radius:7px;border:2px solid var(--line);background:var(--surface);flex:none}
+.step.done .dot{background:var(--sky);border-color:var(--sky)}
+.step.now .dot{background:var(--ink);border-color:var(--ink)}
+.step.now{font-weight:700}
+.step.todo{color:var(--muted)}
+.photo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;height:112px;border-radius:12px;background:var(--soft);color:var(--muted);font-size:12px;font-weight:600}
+</style>
+</helmet>
+
+<div class="{{rootClass}}" style="position: relative; width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; line-height: 1.4">
+
+<!-- CONNEXION -->
+<sc-if value="{{isLogin}}" hint-placeholder-val="{{true}}">
+<div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 28px; padding: 32px 24px">
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 20px; background: var(--sky); color: var(--on-sky)">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"></path><path d="M3 8l9 5 9-5"></path><path d="M12 13v8"></path></svg>
+    </div>
+    <p style="margin: 8px 0 0; font-size: 14px; font-weight: 700; color: var(--link)">[Nom de l’application]</p>
+    <h1 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 800">Tout pour votre restaurant, livré chez vous</h1>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <label class="lab" for="tel">Numéro de téléphone</label>
+    <input id="tel" class="field" type="tel" value="{{phone}}" onChange="{{onPhone}}" placeholder="+228 90 00 00 00">
+  </div>
+  <button class="btn" onClick="{{toOtp}}">Recevoir le code</button>
+</div>
+</sc-if>
+
+<!-- CODE -->
+<sc-if value="{{isOtp}}" hint-placeholder-val="{{false}}">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 24px; padding: 16px 24px 32px">
+  <button class="ico" aria-label="Retour" onClick="{{toLogin}}" style="margin-left: -10px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
+  <div>
+    <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 800">Entrez votre code</h1>
+    <p class="mut" style="margin: 0">Nous l’avons envoyé par SMS au {{phoneShown}}.</p>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <label class="lab" for="code">Code à 4 chiffres</label>
+    <input id="code" class="field" inputmode="numeric" value="{{code}}" onChange="{{onCode}}" placeholder="0000" style="font-size: 26px; font-weight: 700; letter-spacing: 10px; text-align: center">
+  </div>
+  <div style="flex: 1"></div>
+  <button class="btn" onClick="{{toSetup}}">Continuer</button>
+</div>
+</sc-if>
+
+<!-- LANGUE PAYS VILLE -->
+<sc-if value="{{isSetup}}" hint-placeholder-val="{{false}}">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 22px; padding: 32px 24px; overflow-y: auto">
+  <div>
+    <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 800">Où êtes-vous ?</h1>
+    <p class="mut" style="margin: 0">Le marché affiche uniquement les articles de votre ville.</p>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <div class="lab">Langue</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px">
+      <sc-for list="{{langs}}" as="o" hint-placeholder-count="2"><button class="{{o.cls}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <div class="lab">Pays</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px">
+      <sc-for list="{{countries}}" as="o" hint-placeholder-count="3"><button class="{{o.cls}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <div class="lab">Ville</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px">
+      <sc-for list="{{cities}}" as="o" hint-placeholder-count="3"><button class="{{o.cls}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for>
+    </div>
+  </div>
+  <div style="flex: 1"></div>
+  <button class="btn" onClick="{{toApp}}">Commencer</button>
+</div>
+</sc-if>
+
+<!-- APPLICATION -->
+<sc-if value="{{isApp}}" hint-placeholder-val="{{false}}">
+<div style="flex: 1; min-height: 0; display: flex; flex-direction: column">
+
+  <!-- En-tête -->
+  <div style="display: flex; align-items: center; gap: 4px; min-height: 60px; padding: 8px 12px; box-sizing: border-box; flex: none">
+    <sc-if value="{{hasBack}}" hint-placeholder-val="{{false}}">
+      <button class="ico" aria-label="Retour" onClick="{{back}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
+    </sc-if>
+    <h1 style="flex: 1; min-width: 0; margin: 0 4px; font-size: 21px; font-weight: 800">{{headTitle}}</h1>
+    <sc-if value="{{isRoot}}" hint-placeholder-val="{{true}}">
+      <button class="ico" aria-label="Réglages" onClick="{{toSettings}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10"></path><path d="M18 7h2"></path><circle cx="16" cy="7" r="2"></circle><path d="M4 17h2"></path><path d="M10 17h10"></path><circle cx="8" cy="17" r="2"></circle></svg></button>
+    </sc-if>
+  </div>
+
+  <!-- Contenu -->
+  <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 20px; display: flex; flex-direction: column; gap: 12px">
+
+    <!-- Onglet 1 -->
+    <sc-if value="{{showHome}}" hint-placeholder-val="{{false}}">
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; padding: 24px">
+        <div style="font-size: 18px; font-weight: 800">Contenu à définir</div>
+        <p class="mut" style="margin: 0">Le client décidera plus tard du contenu de cet onglet.</p>
+      </div>
+    </sc-if>
+
+    <!-- Liste des commandes -->
+    <sc-if value="{{showOrders}}" hint-placeholder-val="{{true}}">
+      <button class="btn" onClick="{{toNew}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>Nouvelle commande</button>
+      <div class="lab" style="margin-top: 8px">Mes commandes</div>
+      <sc-for list="{{orders}}" as="o" hint-placeholder-count="4">
+        <button class="card tap" onClick="{{o.open}}">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px">
+            <span style="font-size: 13px; font-weight: 700">{{o.id}}</span>
+            <span class="{{o.badge}}">{{o.label}}</span>
+          </div>
+          <div style="font-size: 14px; margin-bottom: 6px">{{o.text}}</div>
+          <div class="mut" style="font-size: 12px">{{o.date}}</div>
+        </button>
+      </sc-for>
+    </sc-if>
+
+    <!-- Nouvelle commande -->
+    <sc-if value="{{showNew}}" hint-placeholder-val="{{false}}">
+      <p class="mut" style="margin: 0">Dites ou écrivez ce dont votre restaurant a besoin.</p>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 18px 0 6px">
+        <button class="{{micClass}}" aria-label="{{micLabel}}" onClick="{{toggleMic}}">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg>
+        </button>
+        <div style="font-size: 14px; font-weight: 700">{{micLabel}}</div>
+      </div>
+      <sc-if value="{{hasVoice}}" hint-placeholder-val="{{false}}">
+        <div class="badge" style="align-self: flex-start">Vocal joint, retranscrit automatiquement</div>
+      </sc-if>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label class="lab" for="demande">Votre demande</label>
+        <textarea id="demande" class="field" rows="5" value="{{draft}}" onChange="{{onDraft}}" placeholder="Exemple : 20 kg de riz et 10 L d’huile pour demain matin" style="resize: none"></textarea>
+      </div>
+      <button class="card tap" onClick="{{toggleAddr}}" style="display: flex; align-items: center; gap: 12px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 0 0-14 0c0 4.900 7 11 7 11z"></path><circle cx="12" cy="10" r="2.500"></circle></svg>
+        <span style="flex: 1"><span style="display: block; font-size: 14px; font-weight: 700">Point de livraison</span><span class="mut" style="font-size: 13px">{{addrText}}</span></span>
+      </button>
+      <button class="btn" onClick="{{sendOrder}}">Envoyer la demande</button>
+    </sc-if>
+
+    <!-- Détail commande -->
+    <sc-if value="{{showOrder}}" hint-placeholder-val="{{false}}">
+      <div class="card">
+        <div style="margin-bottom: 8px"><span class="{{curBadge}}">{{curLabel}}</span></div>
+        <div style="font-size: 15px">{{curText}}</div>
+      </div>
+      <sc-if value="{{curIsRecv}}" hint-placeholder-val="{{false}}">
+        <p class="mut" style="margin: 0">Un opérateur lit votre demande et prépare le prix.</p>
+        <button class="btn2" onClick="{{simPrice}}">Simuler la réponse de l’opérateur</button>
+      </sc-if>
+      <sc-if value="{{curIsPrice}}" hint-placeholder-val="{{false}}">
+        <div class="card" style="background: var(--soft)">
+          <div class="lab">Prix proposé, livraison comprise</div>
+          <div style="font-size: 28px; font-weight: 800; margin-top: 2px">{{curPrice}}</div>
+        </div>
+        <button class="btn" onClick="{{accept}}">Accepter et payer</button>
+        <button class="btn2" onClick="{{refuse}}">Refuser ce prix</button>
+      </sc-if>
+      <sc-if value="{{curToPay}}" hint-placeholder-val="{{false}}">
+        <button class="btn" onClick="{{toPay}}">Payer {{curPrice}}</button>
+      </sc-if>
+      <div class="card">
+        <div class="lab" style="margin-bottom: 6px">Suivi</div>
+        <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+          <div class="{{s.cls}}"><span class="dot"></span><span>{{s.label}}</span></div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- Paiements -->
+    <sc-if value="{{showPayments}}" hint-placeholder-val="{{false}}">
+      <div class="lab">À payer</div>
+      <sc-if value="{{hasDue}}" hint-placeholder-val="{{true}}">
+        <sc-for list="{{due}}" as="o" hint-placeholder-count="1">
+          <div class="card" style="display: flex; flex-direction: column; gap: 10px">
+            <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 13px; font-weight: 700">{{o.id}}</span><span style="font-weight: 800">{{o.price}}</span></div>
+            <div class="mut" style="font-size: 14px">{{o.text}}</div>
+            <button class="btn" onClick="{{o.pay}}">Payer</button>
+          </div>
+        </sc-for>
+      </sc-if>
+      <sc-if value="{{noDue}}" hint-placeholder-val="{{false}}"><p class="mut" style="margin: 0">Aucun paiement en attente.</p></sc-if>
+      <div class="lab" style="margin-top: 10px">Historique</div>
+      <sc-for list="{{history}}" as="h" hint-placeholder-count="3">
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; gap: 8px; margin-bottom: 4px"><span style="font-size: 14px; font-weight: 700">{{h.id}}</span><span style="font-weight: 800">{{h.amount}}</span></div>
+          <div class="mut" style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span>{{h.method}} · {{h.date}}</span><span>{{h.state}}</span></div>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <!-- Payer -->
+    <sc-if value="{{showPay}}" hint-placeholder-val="{{false}}">
+      <div class="card" style="background: var(--soft)">
+        <div class="lab">{{curId}}</div>
+        <div style="font-size: 28px; font-weight: 800">{{curPrice}}</div>
+      </div>
+      <div class="lab" style="margin-top: 6px">Moyen de paiement</div>
+      <sc-for list="{{methods}}" as="m" hint-placeholder-count="3">
+        <button class="{{m.cls}}" onClick="{{m.pick}}"><span>{{m.label}}</span><span class="mut" style="font-size: 13px">{{m.mark}}</span></button>
+      </sc-for>
+      <div style="flex: 1"></div>
+      <button class="btn" onClick="{{confirmPay}}">Confirmer</button>
+    </sc-if>
+
+    <!-- Paiement réussi -->
+    <sc-if value="{{showPaid}}" hint-placeholder-val="{{false}}">
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center">
+        <div style="display: flex; align-items: center; justify-content: center; width: 76px; height: 76px; border-radius: 38px; background: var(--sky); color: var(--on-sky)"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></div>
+        <div style="font-size: 22px; font-weight: 800">{{paidTitle}}</div>
+        <p class="mut" style="margin: 0">Votre commande {{curId}} est en préparation.</p>
+      </div>
+      <button class="btn" onClick="{{finishPay}}">Suivre ma commande</button>
+    </sc-if>
+
+    <!-- Marché -->
+    <sc-if value="{{showMarket}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; align-items: center; gap: 8px" class="field">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="M20 20l-4-4"></path></svg>
+        <input aria-label="Rechercher un article" value="{{q}}" onChange="{{onQ}}" placeholder="Rechercher à {{city}}" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font: 500 15px 'Plus Jakarta Sans', sans-serif">
+      </div>
+      <div class="card" style="background: var(--sky); color: var(--on-sky); border-color: var(--sky)">
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.06em">PUBLICITÉ</div>
+        <div style="font-size: 17px; font-weight: 800; margin-top: 2px">Votre annonce à {{city}}</div>
+        <div style="font-size: 13px">Emplacement réservé aux annonceurs</div>
+      </div>
+      <button class="btn2" onClick="{{toShop}}">{{shopCta}}</button>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{items}}" as="a" hint-placeholder-count="4">
+          <button class="card tap" onClick="{{a.open}}" style="padding: 8px">
+            <span class="photo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="1.500"></circle><path d="M21 16l-5-5-8 8"></path></svg>Photo</span>
+            <span style="display: block; font-size: 14px; font-weight: 700; margin-top: 8px">{{a.name}}</span>
+            <span style="display: block; font-size: 14px; font-weight: 800; color: var(--link)">{{a.price}}</span>
+            <span class="mut" style="display: block; font-size: 12px">{{a.shop}}</span>
+          </button>
+        </sc-for>
+      </div>
+      <sc-if value="{{noItems}}" hint-placeholder-val="{{false}}"><p class="mut" style="margin: 0; text-align: center">Aucun article trouvé à {{city}}.</p></sc-if>
+    </sc-if>
+
+    <!-- Fiche article -->
+    <sc-if value="{{showItem}}" hint-placeholder-val="{{false}}">
+      <div class="photo" style="height: 260px">Photo de l’article</div>
+      <div style="font-size: 22px; font-weight: 800">{{itName}}</div>
+      <div style="font-size: 22px; font-weight: 800; color: var(--link)">{{itPrice}}</div>
+      <div class="mut">{{itShop}} · {{city}}</div>
+      <div style="flex: 1"></div>
+      <button class="btn" onClick="{{contactShop}}">{{contactLabel}}</button>
+      <button class="btn2" onClick="{{report}}">{{reportLabel}}</button>
+    </sc-if>
+
+    <!-- Ouvrir sa boutique -->
+    <sc-if value="{{showShopNew}}" hint-placeholder-val="{{false}}">
+      <p class="mut" style="margin: 0">Votre boutique sera visible par les utilisateurs de {{city}} après validation.</p>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label class="lab" for="shopn">Nom de la boutique</label>
+        <input id="shopn" class="field" value="{{shopName}}" onChange="{{onShopName}}" placeholder="Ma boutique">
+      </div>
+      <div style="flex: 1"></div>
+      <button class="btn" onClick="{{openShop}}">Ouvrir ma boutique</button>
+    </sc-if>
+
+    <!-- Ma boutique -->
+    <sc-if value="{{showShop}}" hint-placeholder-val="{{false}}">
+      <button class="btn" onClick="{{toAddItem}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3"></circle></svg>Ajouter un article</button>
+      <sc-if value="{{noShopItems}}" hint-placeholder-val="{{true}}"><p class="mut" style="margin: 8px 0; text-align: center">Votre boutique est vide. Publiez votre premier article.</p></sc-if>
+      <sc-for list="{{shopItems}}" as="a" hint-placeholder-count="2">
+        <div class="card" style="display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; gap: 12px; align-items: center">
+            <span class="photo" style="width: 72px; height: 72px; flex: none">Photo</span>
+            <span style="flex: 1; min-width: 0"><span style="display: block; font-weight: 700">{{a.name}}</span><span style="display: block; font-weight: 800; color: var(--link)">{{a.price}}</span></span>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button class="btn2" onClick="{{a.edit}}">Modifier</button>
+            <button class="btn2" onClick="{{a.remove}}">Supprimer</button>
+          </div>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <!-- Ajouter / modifier -->
+    <sc-if value="{{showAddItem}}" hint-placeholder-val="{{false}}">
+      <button class="photo tap" onClick="{{togglePhoto}}" style="width: 100%; height: 170px; border: 1px dashed var(--muted); font-family: inherit">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+        {{photoLabel}}
+      </button>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label class="lab" for="artn">Nom de l’article</label>
+        <input id="artn" class="field" value="{{artName}}" onChange="{{onArtName}}" placeholder="Exemple : huile végétale 20 L">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label class="lab" for="artp">Prix en FCFA</label>
+        <input id="artp" class="field" inputmode="numeric" value="{{artPrice}}" onChange="{{onArtPrice}}" placeholder="Exemple : 24000">
+      </div>
+      <div style="flex: 1"></div>
+      <button class="btn" onClick="{{publishItem}}">{{publishLabel}}</button>
+    </sc-if>
+
+    <!-- Réglages -->
+    <sc-if value="{{showSettings}}" hint-placeholder-val="{{false}}">
+      <button class="opt" onClick="{{toggleTheme}}"><span>Thème</span><span class="mut" style="font-size: 14px">{{themeLabel}}</span></button>
+      <button class="opt" onClick="{{toSetupFromApp}}"><span>Langue, pays et ville</span><span class="mut" style="font-size: 14px">{{city}}</span></button>
+      <div style="flex: 1"></div>
+      <button class="btn2" onClick="{{toLogin}}">Se déconnecter</button>
+      <button class="btn2" onClick="{{toLogin}}">Supprimer mon compte</button>
+    </sc-if>
+  </div>
+
+  <!-- Barre du bas -->
+  <sc-if value="{{isRoot}}" hint-placeholder-val="{{true}}">
+    <nav aria-label="Navigation principale" style="flex: none; display: flex; padding: 4px 8px 8px; background: var(--surface); border-top: 1px solid var(--line)">
+      <button class="{{tabHome}}" onClick="{{goHome}}"><span class="pill"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"></path></svg></span>Accueil</button>
+      <button class="{{tabOrders}}" onClick="{{goOrders}}"><span class="pill"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"></path><path d="M3 8l9 5 9-5"></path><path d="M12 13v8"></path></svg></span>Commandes</button>
+      <button class="{{tabPay}}" onClick="{{goPayments}}"><span class="pill"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"></rect><path d="M3 10h18"></path><path d="M7 15h3"></path></svg></span>Paiements</button>
+      <button class="{{tabMarket}}" onClick="{{goMarket}}"><span class="pill"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l1-5h14l1 5"></path><path d="M5 10v10h14V10"></path><path d="M4 10c0 2 3 2 4 0 1 2 3 2 4 0 1 2 3 2 4 0 1 2 4 2 4 0"></path></svg></span>Marché</button>
+    </nav>
+  </sc-if>
+</div>
+</sc-if>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"start":{"editor":"enum","options":["login","orders","voice","market","payments"],"default":"login"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  base() {
+    const start = this.props.start ?? 'login';
+    const startMap = {
+      login: { screen: 'login', tab: 'orders', view: 'root' },
+      orders: { screen: 'app', tab: 'orders', view: 'root' },
+      voice: { screen: 'app', tab: 'orders', view: 'new' },
+      market: { screen: 'app', tab: 'market', view: 'root' },
+      payments: { screen: 'app', tab: 'payments', view: 'root' }
+    };
+    return {
+      ...(startMap[start] || startMap.login),
+      dark: this.props.dark ?? false,
+      phone: '', code: '', lang: 'Français', country: 'Togo', city: 'Lomé',
+      draft: '', rec: 'idle', hasVoice: false, addr: false,
+      curId: 'CMD-1042', method: 'mixx', q: '', itemId: null, reported: false, contacted: false,
+      shopName: '', shopOpen: false, shopItems: [], artName: '', artPrice: '', artPhoto: false, editId: null,
+      orders: [
+        { id: 'CMD-1042', text: '20 kg de riz, 10 L d’huile et 5 cartons de serviettes', status: 'price', price: '74 500 FCFA', date: 'Aujourd’hui, 09:40', paid: false },
+        { id: 'CMD-1041', text: '4 sacs de charbon et 2 caisses de boissons', status: 'conf', price: '38 000 FCFA', date: 'Hier, 17:15', paid: false },
+        { id: 'CMD-1039', text: 'Oignons, tomates et piment pour la semaine', status: 'transit', price: '21 000 FCFA', date: 'Hier, 08:05', paid: true },
+        { id: 'CMD-1036', text: '200 barquettes et 500 serviettes', status: 'done', price: '32 500 FCFA', date: 'Lundi, 11:20', paid: true }
+      ],
+      history: [
+        { id: 'CMD-1039', amount: '21 000 FCFA', method: 'Flooz', date: 'Hier', state: 'Réussi' },
+        { id: 'CMD-1036', amount: '32 500 FCFA', method: 'Mixx by Yas', date: 'Lundi', state: 'Réussi' }
+      ],
+      market: [
+        { id: 'a1', name: 'Huile végétale 20 L', price: '24 000 FCFA', shop: 'Boutique exemple 1', city: 'Lomé' },
+        { id: 'a2', name: 'Riz 50 kg', price: '31 000 FCFA', shop: 'Boutique exemple 2', city: 'Lomé' },
+        { id: 'a3', name: 'Barquettes, lot de 100', price: '6 500 FCFA', shop: 'Boutique exemple 1', city: 'Lomé' },
+        { id: 'a4', name: 'Gaz 12 kg, recharge', price: '7 000 FCFA', shop: 'Boutique exemple 3', city: 'Lomé' },
+        { id: 'a5', name: 'Marmite 40 L', price: '45 000 FCFA', shop: 'Boutique exemple 4', city: 'Kara' }
+      ]
+    };
+  }
+
+  renderVals() {
+    const S = { ...this.base(), ...(this.state || {}) };
+    const set = (o) => this.setState(o);
+    const LABELS = { recv: 'Reçue', price: 'Prix à valider', conf: 'Confirmée', prep: 'En préparation', transit: 'En livraison', done: 'Livrée' };
+    const ORDER = ['recv', 'price', 'conf', 'prep', 'transit', 'done'];
+    const CITIES = { Togo: ['Lomé', 'Kara', 'Sokodé'], 'Bénin': ['Cotonou', 'Porto-Novo'], Ghana: ['Accra', 'Kumasi'] };
+    const badge = (st, unpaid) => (st === 'price' || unpaid ? 'badge act' : 'badge');
+    const chip = (label, on, pick) => ({ label, cls: on ? 'chip on' : 'chip', pick });
+    const root = (tab) => () => set({ tab, view: 'root' });
+
+    const upd = (id, patch) => S.orders.map((o) => (o.id === id ? { ...o, ...patch } : o));
+    const cur = S.orders.find((o) => o.id === S.curId) || S.orders[0];
+    const curIdx = ORDER.indexOf(cur.status);
+    const unpaidConf = (o) => o.status === 'conf' && !o.paid;
+
+    const allItems = [...S.market, ...S.shopItems.map((a) => ({ ...a, shop: S.shopName || 'Ma boutique', city: S.city }))];
+    const q = S.q.trim().toLowerCase();
+    const visible = allItems.filter((a) => a.city === S.city && (!q || a.name.toLowerCase().includes(q)));
+    const it = allItems.find((a) => a.id === S.itemId) || allItems[0];
+
+    const titles = {
+      new: 'Nouvelle commande', order: cur.id, pay: 'Paiement', paid: 'Paiement', item: 'Article',
+      shopNew: 'Ouvrir ma boutique', shop: S.shopName || 'Ma boutique', addItem: S.editId ? 'Modifier l’article' : 'Nouvel article', settings: 'Réglages'
+    };
+    const tabTitles = { home: 'Accueil', orders: 'Commandes', payments: 'Paiements', market: 'Marché · ' + S.city };
+    const isRoot = S.view === 'root';
+    const backMap = {
+      new: () => set({ view: 'root' }), order: () => set({ view: 'root' }), settings: () => set({ view: 'root' }),
+      pay: () => set({ view: S.tab === 'payments' ? 'root' : 'order' }), paid: () => set({ view: 'root' }),
+      item: () => set({ view: 'root' }), shopNew: () => set({ view: 'root' }), shop: () => set({ view: 'root' }),
+      addItem: () => set({ view: 'shop' })
+    };
+
+    return {
+      rootClass: S.dark ? 't-dark' : 't-light',
+      isLogin: S.screen === 'login', isOtp: S.screen === 'otp', isSetup: S.screen === 'setup', isApp: S.screen === 'app',
+      phone: S.phone, code: S.code, phoneShown: S.phone || '+228 90 00 00 00',
+      onPhone: (e) => set({ phone: e.target.value }), onCode: (e) => set({ code: e.target.value }),
+      toLogin: () => set({ screen: 'login', view: 'root' }), toOtp: () => set({ screen: 'otp' }),
+      toSetup: () => set({ screen: 'setup' }), toApp: () => set({ screen: 'app', view: 'root' }),
+      toSetupFromApp: () => set({ screen: 'setup' }),
+
+      langs: ['Français', 'English'].map((l) => chip(l, l === S.lang, () => set({ lang: l }))),
+      countries: Object.keys(CITIES).map((c) => chip(c, c === S.country, () => set({ country: c, city: CITIES[c][0] }))),
+      cities: (CITIES[S.country] || []).map((c) => chip(c, c === S.city, () => set({ city: c }))),
+      city: S.city,
+
+      isRoot, hasBack: !isRoot, headTitle: isRoot ? tabTitles[S.tab] : titles[S.view],
+      back: backMap[S.view] || (() => set({ view: 'root' })),
+      toSettings: () => set({ view: 'settings' }),
+      tabHome: S.tab === 'home' ? 'tab on' : 'tab', tabOrders: S.tab === 'orders' ? 'tab on' : 'tab',
+      tabPay: S.tab === 'payments' ? 'tab on' : 'tab', tabMarket: S.tab === 'market' ? 'tab on' : 'tab',
+      goHome: root('home'), goOrders: root('orders'), goPayments: root('payments'), goMarket: root('market'),
+
+      showHome: isRoot && S.tab === 'home', showOrders: isRoot && S.tab === 'orders',
+      showPayments: isRoot && S.tab === 'payments', showMarket: isRoot && S.tab === 'market',
+      showNew: S.view === 'new', showOrder: S.view === 'order', showPay: S.view === 'pay', showPaid: S.view === 'paid',
+      showItem: S.view === 'item', showShopNew: S.view === 'shopNew', showShop: S.view === 'shop',
+      showAddItem: S.view === 'addItem', showSettings: S.view === 'settings',
+
+      orders: S.orders.map((o) => ({
+        ...o,
+        label: unpaidConf(o) ? 'À payer' : LABELS[o.status],
+        badge: badge(o.status, unpaidConf(o)),
+        open: () => set({ curId: o.id, view: 'order' })
+      })),
+
+      toNew: () => set({ view: 'new', draft: '', rec: 'idle', hasVoice: false, addr: false }),
+      draft: S.draft, onDraft: (e) => set({ draft: e.target.value }), hasVoice: S.hasVoice,
+      micClass: S.rec === 'rec' ? 'mic rec' : 'mic',
+      micLabel: S.rec === 'rec' ? 'Enregistrement, appuyez pour arrêter' : (S.hasVoice ? 'Refaire le vocal' : 'Appuyez pour parler'),
+      toggleMic: () => (S.rec === 'rec'
+        ? set({ rec: 'idle', hasVoice: true, draft: 'Il me faut 20 kilos de riz et 10 litres d’huile pour demain matin.' })
+        : set({ rec: 'rec' })),
+      addrText: S.addr ? 'Position enregistrée, derrière le marché' : 'Choisir sur la carte et ajouter un repère',
+      toggleAddr: () => set({ addr: !S.addr }),
+      sendOrder: () => {
+        const id = 'CMD-' + (1043 + S.orders.length - 4);
+        const text = S.draft.trim() || 'Demande envoyée par vocal';
+        set({ orders: [{ id, text, status: 'recv', price: '52 000 FCFA', date: 'À l’instant', paid: false }, ...S.orders], curId: id, view: 'order' });
+      },
+
+      curId: cur.id, curText: cur.text, curPrice: cur.price,
+      curLabel: unpaidConf(cur) ? 'À payer' : LABELS[cur.status], curBadge: badge(cur.status, unpaidConf(cur)),
+      curIsRecv: cur.status === 'recv', curIsPrice: cur.status === 'price', curToPay: unpaidConf(cur),
+      simPrice: () => set({ orders: upd(cur.id, { status: 'price' }) }),
+      accept: () => set({ orders: upd(cur.id, { status: 'conf' }), view: 'pay' }),
+      refuse: () => set({ orders: upd(cur.id, { status: 'recv' }) }),
+      toPay: () => set({ view: 'pay' }),
+      steps: ORDER.map((st, i) => ({ label: LABELS[st], cls: 'step ' + (i < curIdx ? 'done' : i === curIdx ? 'now' : 'todo') })),
+
+      due: S.orders.filter(unpaidConf).map((o) => ({ ...o, pay: () => set({ curId: o.id, view: 'pay' }) })),
+      hasDue: S.orders.some(unpaidConf), noDue: !S.orders.some(unpaidConf), history: S.history,
+      methods: [
+        { id: 'mixx', label: 'Mixx by Yas' }, { id: 'flooz', label: 'Flooz' }, { id: 'cash', label: 'Paiement à la livraison' }
+      ].map((m) => ({ ...m, cls: S.method === m.id ? 'opt on' : 'opt', mark: S.method === m.id ? 'Choisi' : '', pick: () => set({ method: m.id }) })),
+      confirmPay: () => {
+        const names = { mixx: 'Mixx by Yas', flooz: 'Flooz', cash: 'À la livraison' };
+        set({
+          orders: upd(cur.id, { status: 'prep', paid: true }), view: 'paid',
+          history: [{ id: cur.id, amount: cur.price, method: names[S.method], date: 'Aujourd’hui', state: S.method === 'cash' ? 'À la livraison' : 'Réussi' }, ...S.history]
+        });
+      },
+      paidTitle: S.method === 'cash' ? 'Commande confirmée' : 'Paiement réussi',
+      finishPay: () => set({ tab: 'orders', view: 'order' }),
+
+      q: S.q, onQ: (e) => set({ q: e.target.value }),
+      items: visible.map((a) => ({ ...a, open: () => set({ itemId: a.id, view: 'item', reported: false, contacted: false }) })),
+      noItems: visible.length === 0,
+      shopCta: S.shopOpen ? 'Gérer ma boutique' : 'Ouvrir ma boutique',
+      toShop: () => set({ view: S.shopOpen ? 'shop' : 'shopNew' }),
+      itName: it.name, itPrice: it.price, itShop: it.shop,
+      contactLabel: S.contacted ? 'Message envoyé au vendeur' : 'Contacter le vendeur',
+      contactShop: () => set({ contacted: true }),
+      reportLabel: S.reported ? 'Article signalé' : 'Signaler cet article',
+      report: () => set({ reported: true }),
+
+      shopName: S.shopName, onShopName: (e) => set({ shopName: e.target.value }),
+      openShop: () => set({ shopOpen: true, view: 'shop' }),
+      noShopItems: S.shopItems.length === 0,
+      shopItems: S.shopItems.map((a) => ({
+        ...a,
+        edit: () => set({ editId: a.id, artName: a.name, artPrice: a.raw, artPhoto: true, view: 'addItem' }),
+        remove: () => set({ shopItems: S.shopItems.filter((x) => x.id !== a.id) })
+      })),
+      toAddItem: () => set({ editId: null, artName: '', artPrice: '', artPhoto: false, view: 'addItem' }),
+      artName: S.artName, artPrice: S.artPrice,
+      onArtName: (e) => set({ artName: e.target.value }), onArtPrice: (e) => set({ artPrice: e.target.value }),
+      photoLabel: S.artPhoto ? 'Photo ajoutée, appuyez pour la changer' : 'Prendre une photo',
+      togglePhoto: () => set({ artPhoto: !S.artPhoto }),
+      publishLabel: S.editId ? 'Enregistrer' : 'Publier',
+      publishItem: () => {
+        const raw = S.artPrice.trim() || '0';
+        const fields = { name: S.artName.trim() || 'Nouvel article', raw, price: raw + ' FCFA' };
+        const list = S.editId
+          ? S.shopItems.map((a) => (a.id === S.editId ? { ...a, ...fields } : a))
+          : [...S.shopItems, { id: 'm' + Date.now(), ...fields }];
+        set({ shopItems: list, view: 'shop' });
+      },
+
+      themeLabel: S.dark ? 'Sombre' : 'Clair',
+      toggleTheme: () => set({ dark: !S.dark })
+    };
+  }
+}
+</script>
+</body>
+</html>

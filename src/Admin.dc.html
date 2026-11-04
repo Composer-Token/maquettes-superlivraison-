@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Administration</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0B6E99}a:hover{color:#0B2F44}
+.t-light{--bg:#F4FBFE;--surface:#FFFFFF;--ink:#0B2F44;--muted:#4A6B7C;--line:#D3EBF5;--sky:#87CEEB;--on-sky:#0B2F44;--soft:#EAF7FC;--link:#0B6E99;--warn-bg:#FFF1DC;--warn:#7A4B00}
+.t-dark{--bg:#0A2230;--surface:#12344A;--ink:#EAF7FC;--muted:#A9C6D6;--line:#21506B;--sky:#87CEEB;--on-sky:#0B2F44;--soft:#173F58;--link:#87CEEB;--warn-bg:#4A3410;--warn:#FFD699}
+.nav{display:block;width:100%;min-height:44px;padding:0 14px;box-sizing:border-box;border:0;border-radius:10px;background:transparent;color:var(--ink);text-align:left;font:600 15px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.nav.on{background:var(--sky);color:var(--on-sky);font-weight:800}
+.panel{box-sizing:border-box;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.btn{min-height:46px;padding:0 18px;border:0;border-radius:12px;background:var(--sky);color:var(--on-sky);font:700 15px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.btn2{min-height:46px;padding:0 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:600 14px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.field{width:100%;box-sizing:border-box;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:500 15px 'Plus Jakarta Sans',sans-serif}
+.badge{display:inline-block;padding:4px 10px;border-radius:12px;background:var(--soft);color:var(--ink);font-size:12px;font-weight:700;white-space:nowrap}
+.badge.act{background:var(--warn-bg);color:var(--warn)}
+table{width:100%;min-width:560px;border-collapse:collapse;font-size:14px}
+th{padding:10px 12px;text-align:left;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.rowb{display:block;width:100%;border:0;background:transparent;color:var(--ink);text-align:left;font:700 14px 'Plus Jakarta Sans',sans-serif;cursor:pointer;padding:0;min-height:30px}
+tr.sel td{background:var(--soft)}
+.lab{font-size:13px;font-weight:700}
+.mut{color:var(--muted)}
+</style>
+</helmet>
+
+<div class="{{rootClass}}" style="min-height: 860px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; line-height: 1.4">
+  <nav aria-label="Menu" style="flex: 1 1 220px; max-width: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px">
+    <div style="padding: 8px 14px 16px; font-size: 14px; font-weight: 800; color: var(--link)">[Nom de l’application]</div>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="4">
+      <button class="{{m.cls}}" onClick="{{m.pick}}">{{m.label}}</button>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+    <h1 style="margin: 0; font-size: 26px; font-weight: 800">{{title}}</h1>
+
+    <!-- Demandes -->
+    <sc-if value="{{showReq}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+        <div class="panel" style="flex: 999 1 460px; min-width: 0; overflow-x: auto">
+          <table>
+            <thead><tr><th>Commande</th><th>Restaurant</th><th>Canal</th><th>Statut</th></tr></thead>
+            <tbody>
+              <sc-for list="{{reqs}}" as="r" hint-placeholder-count="4">
+                <tr class="{{r.rowCls}}">
+                  <td><button class="rowb" onClick="{{r.pick}}">{{r.id}}</button></td>
+                  <td>{{r.resto}}</td><td>{{r.channel}}</td><td><span class="{{r.badge}}">{{r.status}}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel" style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><span style="font-size: 18px; font-weight: 800">{{sel.id}}</span><span class="{{selBadge}}">{{sel.status}}</span></div>
+          <div class="mut" style="font-size: 13px">{{sel.resto}} · {{sel.place}}</div>
+          <div>
+            <div class="lab" style="margin-bottom: 4px">Demande</div>
+            <div>{{sel.text}}</div>
+          </div>
+          <sc-if value="{{selVoice}}" hint-placeholder-val="{{true}}">
+            <button class="btn2" onClick="{{playVoice}}">{{voiceLabel}}</button>
+          </sc-if>
+          <label class="lab" for="prix">Prix proposé en FCFA</label>
+          <input id="prix" class="field" inputmode="numeric" value="{{price}}" onChange="{{onPrice}}" placeholder="Exemple : 52000">
+          <label class="lab" for="liv">Livreur</label>
+          <select id="liv" class="field" value="{{driver}}" onChange="{{onDriver}}">
+            <option value="">À affecter après validation</option>
+            <option value="Livreur 1">Livreur 1</option>
+            <option value="Livreur 2">Livreur 2</option>
+          </select>
+          <button class="btn" onClick="{{sendPrice}}">Envoyer le prix au restaurant</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- Boutiques -->
+    <sc-if value="{{showMod}}" hint-placeholder-val="{{false}}">
+      <div class="panel" style="overflow-x: auto">
+        <table>
+          <thead><tr><th>Élément</th><th>Boutique</th><th>Motif</th><th>Décision</th></tr></thead>
+          <tbody>
+            <sc-for list="{{mods}}" as="m" hint-placeholder-count="3">
+              <tr>
+                <td style="font-weight: 700">{{m.item}}</td><td>{{m.shop}}</td><td>{{m.reason}}</td>
+                <td>
+                  <sc-if value="{{m.pending}}" hint-placeholder-val="{{true}}">
+                    <div style="display: flex; gap: 8px"><button class="btn2" onClick="{{m.ok}}">Accepter</button><button class="btn2" onClick="{{m.no}}">Retirer</button></div>
+                  </sc-if>
+                  <sc-if value="{{m.decided}}" hint-placeholder-val="{{false}}"><span class="badge">{{m.result}}</span></sc-if>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </sc-if>
+
+    <!-- Publicités -->
+    <sc-if value="{{showAds}}" hint-placeholder-val="{{false}}">
+      <div class="panel" style="display: flex; flex-direction: column; gap: 12px; max-width: 560px">
+        <label class="lab" for="adt">Texte de l’annonce</label>
+        <input id="adt" class="field" value="{{adText}}" onChange="{{onAdText}}" placeholder="Votre message">
+        <label class="lab" for="adc">Ville ciblée</label>
+        <select id="adc" class="field" value="{{adCity}}" onChange="{{onAdCity}}">
+          <option value="Lomé">Lomé</option>
+          <option value="Kara">Kara</option>
+          <option value="Sokodé">Sokodé</option>
+        </select>
+        <button class="btn" onClick="{{addAd}}">Publier l’annonce</button>
+      </div>
+      <div class="panel" style="overflow-x: auto">
+        <table>
+          <thead><tr><th>Annonce</th><th>Ville</th><th>Statut</th></tr></thead>
+          <tbody>
+            <sc-for list="{{ads}}" as="a" hint-placeholder-count="1">
+              <tr><td style="font-weight: 700">{{a.text}}</td><td>{{a.city}}</td><td><span class="badge">{{a.state}}</span></td></tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </sc-if>
+
+    <!-- Utilisateurs -->
+    <sc-if value="{{showUsers}}" hint-placeholder-val="{{false}}">
+      <div class="panel" style="overflow-x: auto">
+        <table>
+          <thead><tr><th>Nom</th><th>Rôle</th><th>Ville</th><th>Statut</th></tr></thead>
+          <tbody>
+            <sc-for list="{{users}}" as="u" hint-placeholder-count="4">
+              <tr><td style="font-weight: 700">{{u.name}}</td><td>{{u.role}}</td><td>{{u.city}}</td><td><span class="badge">{{u.state}}</span></td></tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1360,"height":860}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const S = {
+      section: 'req', selId: 'CMD-1043', price: '', driver: '', voice: false, adText: '', adCity: 'Lomé',
+      reqs: [
+        { id: 'CMD-1043', resto: 'Restaurant exemple 1', place: 'Lomé', channel: 'Vocal', status: 'À chiffrer', text: 'Il me faut 20 kilos de riz et 10 litres d’huile pour demain matin.' },
+        { id: 'CMD-1042', resto: 'Restaurant exemple 2', place: 'Lomé', channel: 'Message', status: 'Prix envoyé', text: '20 kg de riz, 10 L d’huile et 5 cartons de serviettes' },
+        { id: 'CMD-1041', resto: 'Restaurant exemple 3', place: 'Lomé', channel: 'Vocal', status: 'À payer', text: '4 sacs de charbon et 2 caisses de boissons' },
+        { id: 'CMD-1039', resto: 'Restaurant exemple 1', place: 'Lomé', channel: 'Message', status: 'En livraison', text: 'Oignons, tomates et piment pour la semaine' }
+      ],
+      mods: [
+        { id: 'x1', item: 'Boutique exemple 5', shop: 'Nouvelle boutique', reason: 'Validation à faire', result: '' },
+        { id: 'x2', item: 'Riz 50 kg', shop: 'Boutique exemple 2', reason: 'Signalé par un utilisateur', result: '' },
+        { id: 'x3', item: 'Marmite 40 L', shop: 'Boutique exemple 4', reason: 'Photo à vérifier', result: '' }
+      ],
+      ads: [{ text: 'Votre annonce à Lomé', city: 'Lomé', state: 'Active' }],
+      ...(this.state || {})
+    };
+    const set = (o) => this.setState(o);
+    const urgent = (st) => (st === 'À chiffrer' ? 'badge act' : 'badge');
+    const sel = S.reqs.find((r) => r.id === S.selId) || S.reqs[0];
+    const SECTIONS = [['req', 'Demandes'], ['mod', 'Boutiques et articles'], ['ads', 'Publicités'], ['users', 'Utilisateurs']];
+    const titles = { req: 'Demandes à traiter', mod: 'Modération', ads: 'Publicités', users: 'Utilisateurs' };
+    const decide = (id, result) => set({ mods: S.mods.map((m) => (m.id === id ? { ...m, result } : m)) });
+
+    return {
+      rootClass: (this.props.dark ?? false) ? 't-dark' : 't-light',
+      title: titles[S.section],
+      menu: SECTIONS.map(([id, label]) => ({ label, cls: S.section === id ? 'nav on' : 'nav', pick: () => set({ section: id }) })),
+      showReq: S.section === 'req', showMod: S.section === 'mod', showAds: S.section === 'ads', showUsers: S.section === 'users',
+
+      reqs: S.reqs.map((r) => ({
+        ...r, badge: urgent(r.status), rowCls: r.id === sel.id ? 'sel' : '',
+        pick: () => set({ selId: r.id, price: '', driver: '', voice: false })
+      })),
+      sel, selBadge: urgent(sel.status), selVoice: sel.channel === 'Vocal',
+      voiceLabel: S.voice ? 'Lecture du vocal en cours' : 'Écouter le vocal',
+      playVoice: () => set({ voice: !S.voice }),
+      price: S.price, driver: S.driver,
+      onPrice: (e) => set({ price: e.target.value }), onDriver: (e) => set({ driver: e.target.value }),
+      sendPrice: () => set({ reqs: S.reqs.map((r) => (r.id === sel.id ? { ...r, status: 'Prix envoyé' } : r)) }),
+
+      mods: S.mods.map((m) => ({
+        ...m, pending: !m.result, decided: !!m.result,
+        ok: () => decide(m.id, 'Acceptée'), no: () => decide(m.id, 'Retirée')
+      })),
+
+      adText: S.adText, adCity: S.adCity, ads: S.ads,
+      onAdText: (e) => set({ adText: e.target.value }), onAdCity: (e) => set({ adCity: e.target.value }),
+      addAd: () => set({ ads: [{ text: S.adText.trim() || 'Nouvelle annonce', city: S.adCity, state: 'Active' }, ...S.ads], adText: '' }),
+
+      users: [
+        { name: 'Restaurant exemple 1', role: 'Restaurant', city: 'Lomé', state: 'Actif' },
+        { name: 'Boutique exemple 1', role: 'Vendeur', city: 'Lomé', state: 'Actif' },
+        { name: 'Livreur 1', role: 'Livreur', city: 'Lomé', state: 'Disponible' },
+        { name: 'Livreur 2', role: 'Livreur', city: 'Lomé', state: 'En course' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

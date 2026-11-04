@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquette de l'application</title>
+<style>
+:root{--ground:#EAF7FC;--ink:#0B2F44;--line:#BFE3F2;--sky:#87CEEB}
+@media (prefers-color-scheme:dark){:root{--ground:#0A2230;--ink:#EAF7FC;--line:#21506B}}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:system-ui,sans-serif}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;padding:16px}
+header span{font-weight:700}
+header a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;box-sizing:border-box;border-radius:12px;background:var(--sky);color:#0B2F44;font-weight:700;text-decoration:none}
+main{display:flex;justify-content:center;padding:0 0 32px}
+#app{width:390px;height:844px;overflow:hidden;border-radius:28px;border:1px solid var(--line);box-shadow:0 8px 28px rgba(11,47,68,.15)}
+@media (max-width:430px){
+  header{display:none}main{padding:0}
+  #app{border:0;border-radius:0;box-shadow:none;zoom:var(--fit,1)}
+}
+</style>
+</head>
+<body>
+<header>
+  <span>Maquette de l'application</span>
+  <a href="admin.html">Voir l'administration</a>
+</header>
+<main><div id="app"></div></main>
+<script src="vendor/react.production.min.js"></script>
+<script src="vendor/react-dom.production.min.js"></script>
+<script src="dc-viewer.js"></script>
+<script>
+  const fit = () => document.documentElement.style.setProperty('--fit', window.innerWidth / 390);
+  fit(); window.addEventListener('resize', fit);
+  const q = new URLSearchParams(location.search);
+  mountDC('src/Main.dc.html', document.getElementById('app'), {
+    start: q.get('start') || 'login',
+    dark: q.get('theme') === 'sombre'
+  });
+</script>
+</body>
+</html>
