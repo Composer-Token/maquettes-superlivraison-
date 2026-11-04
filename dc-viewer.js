@@ -70,7 +70,7 @@
   }
 
   window.mountDC = async function (file, target, props) {
-    const res = await fetch(file);
+    const res = await fetch(file, { cache: 'no-cache' });
     if (!res.ok) throw new Error('Fichier introuvable : ' + file);
     // <template> est admis partout, y compris dans <tbody>, contrairement à <sc-for>.
     const source = (await res.text())
