@@ -5,6 +5,7 @@ Prototype cliquable de l'application mobile et de l'administration web. Les donn
 - `index.html` : application mobile
 - `admin.html` : administration web
 - `src/` : sources des écrans
+- `assets/` : logo et icône d'onglet
 - `dc-viewer.js` : affichage des écrans avec React
 
 Options d'adresse pour `index.html` : `?start=orders`, `voice`, `market` ou `payments`, et `?theme=sombre`.

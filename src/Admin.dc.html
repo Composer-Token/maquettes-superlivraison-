@@ -35,7 +35,7 @@ tr.sel td{background:var(--soft)}
 
 <div class="{{rootClass}}" style="min-height: 860px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; line-height: 1.4">
   <nav aria-label="Menu" style="flex: 1 1 220px; max-width: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px">
-    <div style="padding: 8px 14px 16px; font-size: 14px; font-weight: 800; color: var(--link)">[Nom de l’application]</div>
+    <div style="display: flex; align-items: center; gap: 10px; padding: 8px 14px 16px; font-size: 14px; font-weight: 800; color: var(--link)"><img src="assets/logo.png" alt="" width="40" height="40" style="flex: none"><span>[Nom de l’application]</span></div>
     <sc-for list="{{menu}}" as="m" hint-placeholder-count="4">
       <button class="{{m.cls}}" onClick="{{m.pick}}">{{m.label}}</button>
     </sc-for>
