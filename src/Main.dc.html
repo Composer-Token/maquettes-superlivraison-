@@ -46,11 +46,11 @@ a{color:#0B6E99}a:hover{color:#0B2F44}
 </style>
 </helmet>
 
-<div class="{{rootClass}}" style="position: relative; width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; line-height: 1.4">
+<div class="app-root {{rootClass}}" style="position: relative; width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; line-height: 1.4">
 
 <!-- CONNEXION -->
 <sc-if value="{{isLogin}}" hint-placeholder-val="{{true}}">
-<div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 28px; padding: 32px 24px">
+<div class="app-narrow" style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 28px; padding: 32px 24px">
   <div style="display: flex; flex-direction: column; gap: 10px">
     <div style="display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 20px; background: var(--sky); color: var(--on-sky)">
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"></path><path d="M3 8l9 5 9-5"></path><path d="M12 13v8"></path></svg>
@@ -68,7 +68,7 @@ a{color:#0B6E99}a:hover{color:#0B2F44}
 
 <!-- CODE -->
 <sc-if value="{{isOtp}}" hint-placeholder-val="{{false}}">
-<div style="flex: 1; display: flex; flex-direction: column; gap: 24px; padding: 16px 24px 32px">
+<div class="app-narrow" style="flex: 1; display: flex; flex-direction: column; gap: 24px; padding: 16px 24px 32px">
   <button class="ico" aria-label="Retour" onClick="{{toLogin}}" style="margin-left: -10px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
   <div>
     <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 800">Entrez votre code</h1>
@@ -85,7 +85,7 @@ a{color:#0B6E99}a:hover{color:#0B2F44}
 
 <!-- LANGUE PAYS VILLE -->
 <sc-if value="{{isSetup}}" hint-placeholder-val="{{false}}">
-<div style="flex: 1; display: flex; flex-direction: column; gap: 22px; padding: 32px 24px; overflow-y: auto">
+<div class="app-narrow" style="flex: 1; display: flex; flex-direction: column; gap: 22px; padding: 32px 24px; overflow-y: auto">
   <div>
     <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 800">Où êtes-vous ?</h1>
     <p class="mut" style="margin: 0">Le marché affiche uniquement les articles de votre ville.</p>
@@ -115,10 +115,10 @@ a{color:#0B6E99}a:hover{color:#0B2F44}
 
 <!-- APPLICATION -->
 <sc-if value="{{isApp}}" hint-placeholder-val="{{false}}">
-<div style="flex: 1; min-height: 0; display: flex; flex-direction: column">
+<div class="app-shell" style="flex: 1; min-height: 0; display: flex; flex-direction: column">
 
   <!-- En-tête -->
-  <div style="display: flex; align-items: center; gap: 4px; min-height: 60px; padding: 8px 12px; box-sizing: border-box; flex: none">
+  <div class="app-head" style="display: flex; align-items: center; gap: 4px; min-height: 60px; padding: 8px 12px; box-sizing: border-box; flex: none">
     <sc-if value="{{hasBack}}" hint-placeholder-val="{{false}}">
       <button class="ico" aria-label="Retour" onClick="{{back}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
     </sc-if>
@@ -129,7 +129,7 @@ a{color:#0B6E99}a:hover{color:#0B2F44}
   </div>
 
   <!-- Contenu -->
-  <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 20px; display: flex; flex-direction: column; gap: 12px">
+  <div class="app-content" style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 20px; display: flex; flex-direction: column; gap: 12px">
 
     <!-- Onglet 1 -->
     <sc-if value="{{showHome}}" hint-placeholder-val="{{false}}">
@@ -265,9 +265,9 @@ a{color:#0B6E99}a:hover{color:#0B2F44}
         <div style="font-size: 13px">Emplacement réservé aux annonceurs</div>
       </div>
       <button class="btn2" onClick="{{toShop}}">{{shopCta}}</button>
-      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <div class="app-items" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px">
         <sc-for list="{{items}}" as="a" hint-placeholder-count="4">
-          <button class="card tap" onClick="{{a.open}}" style="padding: 8px">
+          <button class="card tap" onClick="{{a.open}}" style="padding: 8px; display: flex; flex-direction: column; justify-content: flex-start">
             <span class="photo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="1.500"></circle><path d="M21 16l-5-5-8 8"></path></svg>Photo</span>
             <span style="display: block; font-size: 14px; font-weight: 700; margin-top: 8px">{{a.name}}</span>
             <span style="display: block; font-size: 14px; font-weight: 800; color: var(--link)">{{a.price}}</span>
@@ -348,7 +348,7 @@ a{color:#0B6E99}a:hover{color:#0B2F44}
 
   <!-- Barre du bas -->
   <sc-if value="{{isRoot}}" hint-placeholder-val="{{true}}">
-    <nav aria-label="Navigation principale" style="flex: none; display: flex; padding: 4px 8px 8px; background: var(--surface); border-top: 1px solid var(--line)">
+    <nav class="app-nav" aria-label="Navigation principale" style="flex: none; display: flex; padding: 4px 8px 8px; background: var(--surface); border-top: 1px solid var(--line)">
       <button class="{{tabHome}}" onClick="{{goHome}}"><span class="pill"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"></path></svg></span>Accueil</button>
       <button class="{{tabOrders}}" onClick="{{goOrders}}"><span class="pill"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"></path><path d="M3 8l9 5 9-5"></path><path d="M12 13v8"></path></svg></span>Commandes</button>
       <button class="{{tabPay}}" onClick="{{goPayments}}"><span class="pill"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"></rect><path d="M3 10h18"></path><path d="M7 15h3"></path></svg></span>Paiements</button>

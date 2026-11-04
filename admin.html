@@ -4,6 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Maquette de l'administration</title>
+<style>
+#app > div{min-height:100dvh!important}
+@media (max-width:840px){
+  #app > div{padding:12px!important;gap:12px!important;align-content:flex-start}
+  #app nav{flex:1 1 100%!important;flex-direction:row!important;overflow-x:auto;gap:6px!important}
+  #app nav > div{flex:1 1 100%;padding:4px 2px 0!important}
+  #app nav{flex-wrap:wrap}
+  #app .nav{width:auto;flex:1 1 auto;white-space:nowrap;text-align:center}
+  #app main h1{font-size:22px!important}
+}
+</style>
 </head>
 <body>
 <div id="app"></div>

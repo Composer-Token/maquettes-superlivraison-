@@ -2,35 +2,56 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Maquette de l'application</title>
 <style>
-:root{--ground:#EAF7FC;--ink:#0B2F44;--line:#BFE3F2;--sky:#87CEEB}
-@media (prefers-color-scheme:dark){:root{--ground:#0A2230;--ink:#EAF7FC;--line:#21506B}}
-body{margin:0;background:var(--ground);color:var(--ink);font-family:system-ui,sans-serif}
-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;padding:16px}
-header span{font-weight:700}
-header a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;box-sizing:border-box;border-radius:12px;background:var(--sky);color:#0B2F44;font-weight:700;text-decoration:none}
-main{display:flex;justify-content:center;padding:0 0 32px}
-#app{width:390px;height:844px;overflow:hidden;border-radius:28px;border:1px solid var(--line);box-shadow:0 8px 28px rgba(11,47,68,.15)}
-@media (max-width:430px){
-  header{display:none}main{padding:0}
-  #app{border:0;border-radius:0;box-shadow:none;zoom:var(--fit,1)}
+:root{--ground:#EAF7FC;--tx:#0B2F44;--bd:#BFE3F2;--accent:#87CEEB}
+@media (prefers-color-scheme:dark){:root{--ground:#0A2230;--tx:#EAF7FC;--bd:#21506B}}
+html,body{height:100%}
+body{margin:0;display:flex;flex-direction:column;height:100dvh;background:var(--ground);color:var(--tx);font-family:system-ui,sans-serif}
+.topbar{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px;border-bottom:1px solid var(--bd)}
+.topbar span{font-weight:700}
+.topbar a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;box-sizing:border-box;border-radius:12px;background:var(--accent);color:#0B2F44;font-weight:700;text-decoration:none}
+#app{flex:1;min-height:0;display:flex}
+
+/* L'écran de 390 × 844 de la maquette devient fluide sur le site. */
+.app-root{flex:1;min-width:0;width:auto!important;height:auto!important}
+.app-narrow{align-self:center;width:100%;max-width:460px;box-sizing:border-box}
+.app-head{padding-inline:max(12px,calc((100% - 760px)/2))!important}
+.app-content{padding-inline:max(16px,calc((100% - 760px)/2))!important}
+.app-nav{justify-content:center}
+.app-nav .tab{max-width:160px}
+
+@media (min-width:600px){
+  .app-items{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))!important}
+}
+
+/* Téléphone : plein écran. */
+@media (max-width:599px){
+  .topbar{display:none}
+  .app-nav{padding-bottom:max(8px,env(safe-area-inset-bottom))!important}
+}
+
+/* Ordinateur : la barre du bas passe sur le côté. */
+@media (min-width:1000px){
+  .app-shell{display:grid!important;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  .app-head{grid-column:2;grid-row:1}
+  .app-content{grid-column:2;grid-row:2}
+  .app-nav{grid-column:1;grid-row:1/3;flex-direction:column;justify-content:flex-start;gap:4px;width:220px;box-sizing:border-box;padding:16px 12px!important;border-top:0!important;border-right:1px solid var(--line)}
+  .app-nav .tab{flex:none;max-width:none;flex-direction:row;justify-content:flex-start;gap:10px;min-height:52px;font-size:14px}
 }
 </style>
 </head>
 <body>
-<header>
+<header class="topbar">
   <span>Maquette de l'application</span>
   <a href="admin.html">Voir l'administration</a>
 </header>
-<main><div id="app"></div></main>
+<div id="app"></div>
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
 <script src="dc-viewer.js"></script>
 <script>
-  const fit = () => document.documentElement.style.setProperty('--fit', window.innerWidth / 390);
-  fit(); window.addEventListener('resize', fit);
   const q = new URLSearchParams(location.search);
   mountDC('src/Main.dc.html', document.getElementById('app'), {
     start: q.get('start') || 'login',
